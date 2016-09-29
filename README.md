@@ -16,7 +16,7 @@ This document describes the setup of a Matrix bot based on NEB and running as a 
 git clone https://github.com/nic0d/Matrix-NEB-docker.git
 cd Matrix-NEB-docker
 ```
-* Edit configuration of the bot (./add/neb.conf)
+* Create & edit configuration of the bot (./add/neb.conf). See neb.conf.sample.
 
 ```
 {
@@ -36,7 +36,7 @@ cd Matrix-NEB-docker
 * Docker image creation
 
 ```
-docker build -t nic0d/neb-bot .
+docker build -t nic0d/matrix-neb-docker .
 ...
 Successfully built <id>
 ```
@@ -44,7 +44,7 @@ Successfully built <id>
 ## Run
 
 ```
-docker run -it --rm -P nic0d/neb-bot:latest
+docker run -it --rm -P -e GOOGLE_API_KEY=XXXXX nic0d/matrix-neb-docker:latest
 
 2016-07-19 12:04:06,291 INFO:   ===== NEB initialising =====
 2016-07-19 12:04:06,291 INFO: Loading config from /app/neb.conf
@@ -62,6 +62,8 @@ docker run -it --rm -P nic0d/neb-bot:latest
 2016-07-19 12:04:06,372 INFO: Starting new HTTP connection (1): matrix.tai.org
 ```
 
+NB: The google graph commands requires a Google API key, which is given as a environment variable.
+
 The following additional options might be useful:
 
 | Option | Description |
@@ -69,7 +71,7 @@ The following additional options might be useful:
 | --rm  | Useful when testing, but delete the container once it is stopped. |
 | --add-host server_name:IP | Add a static name resolution in the /etc/hosts of the container. It is useful when the matrix server is not properly declared in DNS |
 | -v host-dir:container-dir | Mount a volume from the host in the container. Can be used as a shared folder, or to store the code of the application being edited. |
-| --entrypoint /bin/sh | Override the entrypoint of the container. 9V05078699736Instead of starting the NEB application it starts a shell in the container, which allows to check different things (eg: dns resolution, existence of files, configurations, etc). The application can then be started using python neb.py -c conf_file
+| --entrypoint /bin/sh | Override the entrypoint of the container. Instead of starting the NEB application it starts a shell in the container, which allows to check different things (eg: dns resolution, existence of files, configurations, etc). The application can then be started using python neb.py -c conf_file
 
 ## Test the bot
 
@@ -83,6 +85,7 @@ Use a Matrix client to invite the bot user (eg: @NEB:matrix.org) to a room. Then
 
 NEB proposes a simple way to add new commands. It defines an interface (./neb/plugins.PluginInterface) and base class (./neb/plugins.Plugin).
 Adding a new command consists in:
+
 1. Create a class extending Plugin
 2. Define the name of the command
 3. Define the command methods and parameters
