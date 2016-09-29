@@ -1,0 +1,6 @@
+{
+    "url": "<synapse server url>",
+    "user": "<bot user name> (eg: @NEB:matrix.org)",
+    "token": "<token of the bot user>",
+    "admins": ["<list of account that have admin rights (in the context of NEB bot)."]    
+}
